@@ -30,7 +30,7 @@
 class Bitcraze_PMW3901 {
 public:
   Bitcraze_PMW3901(uint8_t cspin);
-
+  Bitcraze_PMW3901(uint8_t cspin, uint8_t miso, uint8_t mosi, uint8_t sck);
   boolean begin(void);
 
   void readMotionCount(int16_t *deltaX, int16_t *deltaY);
@@ -41,6 +41,9 @@ public:
 
 private:
   uint8_t _cs;
+  uint8_t _mosi = 255;
+  uint8_t _miso = 255;
+  uint8_t _sck = 255;
 
   void registerWrite(uint8_t reg, uint8_t value);
   uint8_t registerRead(uint8_t reg);

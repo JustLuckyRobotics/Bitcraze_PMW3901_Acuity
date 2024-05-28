@@ -31,9 +31,21 @@ Bitcraze_PMW3901::Bitcraze_PMW3901(uint8_t cspin)
   : _cs(cspin)
 { }
 
+//additional contructor to allow for alternative esp32 pins
+Bitcraze_PMW3901::Bitcraze_PMW3901(uint8_t cspin, uint8_t miso, uint8_t mosi, uint8_t sck)
+  : _cs(cspin), _miso(miso), _mosi(mosi), _sck(sck)
+{ }
+
 boolean Bitcraze_PMW3901::begin(void) {
   // Setup SPI port
-  SPI.begin();
+  if(_miso != 255 && _mosi != 255 && _sck != 255)
+  {
+    SPI.begin(_sck, _miso, _mosi, _cs); //set the actual used pins
+  }
+  else{
+    SPI.begin();
+  }
+  
   pinMode(_cs, OUTPUT);
   SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE3));
 
